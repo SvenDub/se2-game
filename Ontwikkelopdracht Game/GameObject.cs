@@ -6,8 +6,8 @@ namespace Ontwikkelopdracht_Game
     {
         public double X { get; set; }
         public double Y { get; set; }
-        public int Width { get; set; }
-        public int Height { get; set; }
+        public int Width { get; set; } = 50;
+        public int Height { get; set; } = 50;
         public Rectangle Rect => new Rectangle((int) X, (int) Y, Width, Height);
         public double Rotation { get; set; }
         public double Health { get; set; }

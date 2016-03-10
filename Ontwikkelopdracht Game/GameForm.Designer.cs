@@ -1,6 +1,6 @@
 ﻿namespace Ontwikkelopdracht_Game
 {
-    partial class Form1
+    partial class GameForm
     {
         /// <summary>
         /// Required designer variable.
@@ -37,18 +37,18 @@
             this.imgCanvas.Dock = System.Windows.Forms.DockStyle.Fill;
             this.imgCanvas.Location = new System.Drawing.Point(0, 0);
             this.imgCanvas.Name = "imgCanvas";
-            this.imgCanvas.Size = new System.Drawing.Size(671, 552);
+            this.imgCanvas.Size = new System.Drawing.Size(1350, 729);
             this.imgCanvas.TabIndex = 0;
             this.imgCanvas.TabStop = false;
             // 
-            // Form1
+            // GameForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(671, 552);
+            this.ClientSize = new System.Drawing.Size(1350, 729);
             this.Controls.Add(this.imgCanvas);
-            this.Name = "Form1";
-            this.Text = "Form1";
+            this.Name = "GameForm";
+            this.Text = "Game";
             ((System.ComponentModel.ISupportInitialize)(this.imgCanvas)).EndInit();
             this.ResumeLayout(false);
 

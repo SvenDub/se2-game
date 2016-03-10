@@ -5,11 +5,11 @@ using Timer = System.Windows.Forms.Timer;
 
 namespace Ontwikkelopdracht_Game
 {
-    public partial class Form1 : Form
+    public partial class GameForm : Form
     {
         private readonly World _world;
 
-        public Form1()
+        public GameForm()
         {
             InitializeComponent();
 
