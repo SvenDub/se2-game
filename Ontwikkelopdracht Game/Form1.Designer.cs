@@ -28,12 +28,35 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
+            this.imgCanvas = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.imgCanvas)).BeginInit();
+            this.SuspendLayout();
+            // 
+            // imgCanvas
+            // 
+            this.imgCanvas.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.imgCanvas.Location = new System.Drawing.Point(0, 0);
+            this.imgCanvas.Name = "imgCanvas";
+            this.imgCanvas.Size = new System.Drawing.Size(671, 552);
+            this.imgCanvas.TabIndex = 0;
+            this.imgCanvas.TabStop = false;
+            // 
+            // Form1
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(671, 552);
+            this.Controls.Add(this.imgCanvas);
+            this.Name = "Form1";
             this.Text = "Form1";
+            ((System.ComponentModel.ISupportInitialize)(this.imgCanvas)).EndInit();
+            this.ResumeLayout(false);
+
         }
 
         #endregion
+
+        private System.Windows.Forms.PictureBox imgCanvas;
     }
 }
 
