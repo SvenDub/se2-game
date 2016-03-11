@@ -43,6 +43,13 @@ namespace Ontwikkelopdracht_Game
                 Y = 500,
                 BaseCooldown = 100
             });
+
+            _objectManager.AddObject(new Event
+            {
+                X = 250,
+                Y = 250,
+                Action = GameEvent.Win
+            });
         }
 
         private PictureBox imgCanvas;

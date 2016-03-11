@@ -44,7 +44,7 @@ namespace Ontwikkelopdracht_Game
 
         public bool Intersects(GameObject source, Rectangle rect)
         {
-            return GameObjects.Any(gameObject => !gameObject.Equals(source) && gameObject.Intersects(rect));
+            return Intersects(source, rect, new List<GameObject>());
         }
 
 
@@ -58,8 +58,10 @@ namespace Ontwikkelopdracht_Game
             return
                 GameObjects.Any(
                     gameObject =>
-                        !gameObject.Equals(source) && !excluded.Contains(gameObject) &&
-                        gameObject.Intersects(rect));
+                        !gameObject.Equals(source)
+                        && !(gameObject is Event)
+                        && !excluded.Contains(gameObject)
+                        && gameObject.Intersects(rect));
         }
 
         public List<GameObject> IntersectedObjects(GameObject source)
@@ -69,7 +71,7 @@ namespace Ontwikkelopdracht_Game
 
         public List<GameObject> IntersectedObjects(GameObject source, Rectangle rect)
         {
-            return GameObjects.Where(gameObject => !gameObject.Equals(source) && gameObject.Intersects(rect)).ToList();
+            return IntersectedObjects(source, rect, new List<GameObject>());
         }
 
         public List<GameObject> IntersectedObjects(GameObject source, List<GameObject> excluded)
@@ -82,9 +84,10 @@ namespace Ontwikkelopdracht_Game
             return
                 GameObjects.Where(
                     gameObject =>
-                        !gameObject.Equals(source) && !excluded.Contains(gameObject) &&
-                        gameObject.Intersects(rect)).ToList();
+                        !gameObject.Equals(source)
+                        && !(gameObject is Event)
+                        && !excluded.Contains(gameObject)
+                        && gameObject.Intersects(rect)).ToList();
         }
-
     }
 }
