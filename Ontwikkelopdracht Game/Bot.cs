@@ -20,6 +20,16 @@ namespace Ontwikkelopdracht_Game
                 Rotation = Math.Atan2(closestPlayer.X - X, closestPlayer.Y - Y);
                 Move(2);
             }
+
+            if (Cooldown <= 0)
+            {
+                Fire();
+                Cooldown = BaseCooldown;
+            }
+            else
+            {
+                Cooldown--;
+            }
         }
 
         private double DistanceTo(Player player)

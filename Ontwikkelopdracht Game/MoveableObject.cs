@@ -10,7 +10,11 @@ namespace Ontwikkelopdracht_Game
             double dx = Math.Sin(Rotation)*amount;
             double dy = Math.Cos(Rotation)*amount;
 
+            double rotation = Rotation;
+
             Move(dx, dy);
+
+            Rotation = rotation;
         }
 
         public void Move(double dx, double dy)

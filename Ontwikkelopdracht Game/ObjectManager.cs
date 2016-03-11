@@ -16,12 +16,12 @@ namespace Ontwikkelopdracht_Game
 
         public void GameTick()
         {
-            GameObjects.ForEach(o => o.GameTick());
+            GameObjects.ToList().ForEach(o => o.GameTick());
         }
 
         public void Draw(Graphics g)
         {
-            GameObjects.ForEach(o => o.Draw(g));
+            GameObjects.ToList().ForEach(o => o.Draw(g));
         }
 
         public void AddObject(GameObject gameObject)

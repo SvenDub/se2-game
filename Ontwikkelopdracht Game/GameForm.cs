@@ -7,13 +7,13 @@ namespace Ontwikkelopdracht_Game
 {
     public partial class GameForm : Form
     {
-        private readonly World _world;
+        private readonly World _world = World.Instance;
 
         public GameForm()
         {
             InitializeComponent();
 
-            _world = new World(imgCanvas);
+            _world.ImgCanvas = imgCanvas;
         }
     }
 }

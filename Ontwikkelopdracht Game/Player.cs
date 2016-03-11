@@ -62,7 +62,7 @@ namespace Ontwikkelopdracht_Game
 
             if (Health <= 0)
             {
-                MessageBox.Show("Game over!");
+                World.Instance.End(false);
             }
         }
     }
