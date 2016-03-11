@@ -12,7 +12,6 @@ namespace Ontwikkelopdracht_Game
         {
             if (ObjectManager.Instance.Intersects(this))
             {
-                Console.WriteLine("Intersecting");
                 List<GameObject> intersectedObjects = ObjectManager.Instance.IntersectedObjects(this);
                 Action.Invoke(this, intersectedObjects[0]);
             }
