@@ -1,7 +1,4 @@
-﻿using System;
-using System.Drawing;
-using System.Windows.Forms;
-using Timer = System.Windows.Forms.Timer;
+﻿using System.Windows.Forms;
 
 namespace Ontwikkelopdracht_Game
 {
@@ -14,6 +11,8 @@ namespace Ontwikkelopdracht_Game
             InitializeComponent();
 
             _world.ImgCanvas = imgCanvas;
+
+            _world.Populate(LevelPreset.One);
         }
     }
 }

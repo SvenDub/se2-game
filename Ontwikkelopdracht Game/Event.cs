@@ -34,7 +34,6 @@ namespace Ontwikkelopdracht_Game
             if (target is Player)
             {
                 World.Instance.End(true);
-                source.Destroy();
             }
         };
     }

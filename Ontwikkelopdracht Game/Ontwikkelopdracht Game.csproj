@@ -59,6 +59,7 @@
       <DependentUpon>GameForm.cs</DependentUpon>
     </Compile>
     <Compile Include="GameObject.cs" />
+    <Compile Include="LevelPreset.cs" />
     <Compile Include="MoveableObject.cs" />
     <Compile Include="ObjectManager.cs" />
     <Compile Include="Player.cs" />

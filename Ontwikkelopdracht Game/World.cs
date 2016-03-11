@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -30,26 +31,6 @@ namespace Ontwikkelopdracht_Game
             _drawTimer = new Timer { Interval = (int)(1000d / 60) };
             _drawTimer.Tick += _drawTimer_Tick;
             _drawTimer.Start();
-
-            _objectManager.AddObject(new Player
-            {
-                X = 10,
-                Y = 10
-            });
-
-            _objectManager.AddObject(new Bot
-            {
-                X = 500,
-                Y = 500,
-                BaseCooldown = 100
-            });
-
-            _objectManager.AddObject(new Event
-            {
-                X = 250,
-                Y = 250,
-                Action = GameEvent.Win
-            });
         }
 
         private PictureBox imgCanvas;
@@ -95,6 +76,11 @@ namespace Ontwikkelopdracht_Game
             _gameTimer.Stop();
 
             MessageBox.Show(won ? "Won" : "Lost");
+        }
+
+        public void Populate(List<GameObject> gameObjects)
+        {
+            gameObjects.ForEach(_objectManager.AddObject);
         }
     }
 }
