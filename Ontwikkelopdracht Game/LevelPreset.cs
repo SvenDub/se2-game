@@ -30,9 +30,9 @@ namespace Ontwikkelopdracht_Game
             },
             new Wall
             {
-                X = 550,
-                Y = 400,
-                Height = 300
+                X = 150,
+                Y = 150,
+                Height = 450
             }
             
         };

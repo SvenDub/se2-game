@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
@@ -52,7 +53,7 @@ namespace Ontwikkelopdracht_Game
             {
                 for (int y = 0; y < SearchHeight; y++)
                 {
-                    g.DrawEllipse(new Pen(Color.FromArgb((int) (grid[x,y]/((float) SearchWidth)*255), Color.Black)), x * 50, y * 50, 50, 50);
+                    g.DrawEllipse(new Pen(Color.FromArgb((int) (grid[x,y]/((float) SearchWidth)*255), Color.Black)), x * SearchAccuracy, y * SearchAccuracy, SearchAccuracy, SearchAccuracy);
                 }
             }
         }
@@ -82,14 +83,25 @@ namespace Ontwikkelopdracht_Game
             }
         }
 
+        private List<Point> shortestPath = new List<Point>();
+        private int shortestPathLength = SearchWidth;
+        private int targetX;
+        private int targetY;
+
         private int[,] grid = new int[SearchWidth, SearchHeight];
         private int[,] ignoreGrid = new int[SearchWidth, SearchHeight];
 
-        const int SearchHeight = World.Height/50;
-        const int SearchWidth = World.Width/50;
+        const int SearchAccuracy = 25;
+
+        const int SearchHeight = World.Height/SearchAccuracy;
+        const int SearchWidth = World.Width/SearchAccuracy;
 
         private void CreatePath(double targetX, double targetY)
         {
+            shortestPath = new List<Point>();
+            shortestPathLength = SearchWidth;
+            this.targetX = (int) targetX/SearchAccuracy;
+            this.targetY = (int) targetY/SearchAccuracy;
             grid = new int[SearchWidth, SearchHeight];
             ignoreGrid = new int[SearchWidth, SearchHeight];
 
@@ -98,26 +110,40 @@ namespace Ontwikkelopdracht_Game
                 for (int y = 0; y < SearchHeight; y++)
                 {
                     grid[x, y] = SearchWidth;
-                    if (ObjectManager.Instance.GameObjects.Any(o => o.Rect.Contains(x*50, y*50)))
+                    if (ObjectManager.Instance.GameObjects.Any(o => o.Rect.Contains(x*SearchAccuracy, y*SearchAccuracy)))
                     {
                         ignoreGrid[x, y] = 1;
                     }
                 }
             }
 
-            Lee(0, (int) X/50, (int) Y/50);
-            Console.WriteLine("Shortest route: " + grid[(int) targetX/50, (int) targetY/50]);
+            Lee(0, (int) X/SearchAccuracy, (int) Y/SearchAccuracy, new List<Point>());
+            Console.WriteLine("Shortest route: " + grid[this.targetX, this.targetY]);
+            Console.WriteLine("Shortest route list: " + shortestPath.Count);
+            
+            Point prevPoint = new Point((int) (X/SearchAccuracy), (int) (Y/SearchAccuracy));
+            foreach (Point point in shortestPath)
+            {
+                _path.AddLine(prevPoint.X*SearchAccuracy, prevPoint.Y*SearchAccuracy, point.X*SearchAccuracy, point.Y*SearchAccuracy);
+                prevPoint = point;
+            }
         }
 
-        private void Lee(int k, int x, int y)
+        private void Lee(int k, int x, int y, List<Point> path)
         {
+            path.Add(new Point(x, y));
+            if (shortestPathLength > k && x == targetX && y == targetY)
+            {
+                shortestPath = path;
+                shortestPathLength = k;
+            }
             if (x + 1 < SearchWidth && ignoreGrid[x + 1, y] != 1)
             {
                 // Go down...
                 if (grid[x + 1, y] > k + 1)
                 {
                     grid[x + 1, y] = k + 1;
-                    Lee(k + 1, x + 1, y);
+                    Lee(k + 1, x + 1, y, new List<Point>(path));
                 }
             }
 
@@ -128,7 +154,7 @@ namespace Ontwikkelopdracht_Game
                 if (grid[x - 1, y] > k + 1)
                 {
                     grid[x - 1, y] = k + 1;
-                    Lee(k + 1, x - 1, y);
+                    Lee(k + 1, x - 1, y, new List<Point>(path));
                 }
             }
 
@@ -139,7 +165,7 @@ namespace Ontwikkelopdracht_Game
                 if (grid[x, y + 1] > k + 1)
                 {
                     grid[x, y + 1] = k + 1;
-                    Lee(k + 1, x, y + 1);
+                    Lee(k + 1, x, y + 1, new List<Point>(path));
                 }
             }
 
@@ -150,7 +176,7 @@ namespace Ontwikkelopdracht_Game
                 if (grid[x, y - 1] > k + 1)
                 {
                     grid[x, y - 1] = k + 1;
-                    Lee(k + 1, x, y - 1);
+                    Lee(k + 1, x, y - 1, new List<Point>(path));
                 }
             }
         }
