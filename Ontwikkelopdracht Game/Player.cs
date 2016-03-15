@@ -11,7 +11,7 @@ namespace Ontwikkelopdracht_Game
         {
             int dx = 0;
             int dy = 0;
-
+            
             if (Keyboard.IsKeyDown(Key.W))
             {
                 dy = -3;
