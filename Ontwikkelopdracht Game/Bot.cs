@@ -21,7 +21,7 @@ namespace Ontwikkelopdracht_Game
 
             if (closestPlayer != null)
             {
-                CreatePath(closestPlayer.X, closestPlayer.Y);
+                CreatePath(closestPlayer);
 
                 Rotation = Math.Atan2(closestPlayer.X - X, closestPlayer.Y - Y);
                 Move(2);
@@ -96,12 +96,12 @@ namespace Ontwikkelopdracht_Game
         const int SearchHeight = World.Height/SearchAccuracy;
         const int SearchWidth = World.Width/SearchAccuracy;
 
-        private void CreatePath(double targetX, double targetY)
+        private void CreatePath(GameObject target)
         {
             shortestPath = new List<Point>();
             shortestPathLength = SearchWidth;
-            this.targetX = (int) targetX/SearchAccuracy;
-            this.targetY = (int) targetY/SearchAccuracy;
+            targetX = (int) target.X/SearchAccuracy;
+            targetY = (int) target.Y/SearchAccuracy;
             grid = new int[SearchWidth, SearchHeight];
             ignoreGrid = new int[SearchWidth, SearchHeight];
 
@@ -110,21 +110,20 @@ namespace Ontwikkelopdracht_Game
                 for (int y = 0; y < SearchHeight; y++)
                 {
                     grid[x, y] = SearchWidth;
-                    if (ObjectManager.Instance.Intersects(this, new Rectangle(x*SearchAccuracy, y*SearchAccuracy, SearchAccuracy, SearchAccuracy)))
+                    Rectangle rectangle = new Rectangle(x*SearchAccuracy, y*SearchAccuracy, SearchAccuracy,
+                        SearchAccuracy);
+                    if (ObjectManager.Instance.Intersects(this, rectangle))
                     {
                         ignoreGrid[x, y] = 1;
+                        if (ObjectManager.Instance.IntersectedObjects(this, rectangle).Contains(target))
+                        {
+                            ignoreGrid[x, y] = 2;
+                        }
                     }
                 }
             }
 
             Lee(0, (int) X/SearchAccuracy, (int) Y/SearchAccuracy, new List<Point>());
-            
-            /*Point prevPoint = new Point((int) (X/SearchAccuracy), (int) (Y/SearchAccuracy));
-            foreach (Point point in shortestPath)
-            {
-                _path.AddLine(prevPoint.X*SearchAccuracy, prevPoint.Y*SearchAccuracy, point.X*SearchAccuracy, point.Y*SearchAccuracy);
-                prevPoint = point;
-            }*/
 
             if (shortestPath.Count > 0)
             {
@@ -142,7 +141,7 @@ namespace Ontwikkelopdracht_Game
         private void Lee(int k, int x, int y, List<Point> path)
         {
             path.Add(new Point(x, y));
-            if (shortestPathLength > k && x >= targetX - 1 && x <= targetX + 1 && y >= targetY - 1 && y <= targetY + 1)
+            if (shortestPathLength > k && ignoreGrid[x, y] == 2)
             {
                 shortestPath = path;
                 shortestPathLength = k;
