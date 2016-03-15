@@ -110,7 +110,7 @@ namespace Ontwikkelopdracht_Game
                 for (int y = 0; y < SearchHeight; y++)
                 {
                     grid[x, y] = SearchWidth;
-                    if (ObjectManager.Instance.GameObjects.Any(o => o.Rect.Contains(x*SearchAccuracy, y*SearchAccuracy)))
+                    if (ObjectManager.Instance.Intersects(this, new Rectangle(x*SearchAccuracy, y*SearchAccuracy, SearchAccuracy, SearchAccuracy)))
                     {
                         ignoreGrid[x, y] = 1;
                     }
@@ -118,21 +118,31 @@ namespace Ontwikkelopdracht_Game
             }
 
             Lee(0, (int) X/SearchAccuracy, (int) Y/SearchAccuracy, new List<Point>());
-            Console.WriteLine("Shortest route: " + grid[this.targetX, this.targetY]);
-            Console.WriteLine("Shortest route list: " + shortestPath.Count);
             
-            Point prevPoint = new Point((int) (X/SearchAccuracy), (int) (Y/SearchAccuracy));
+            /*Point prevPoint = new Point((int) (X/SearchAccuracy), (int) (Y/SearchAccuracy));
             foreach (Point point in shortestPath)
             {
                 _path.AddLine(prevPoint.X*SearchAccuracy, prevPoint.Y*SearchAccuracy, point.X*SearchAccuracy, point.Y*SearchAccuracy);
                 prevPoint = point;
+            }*/
+
+            if (shortestPath.Count > 0)
+            {
+                List<Point> path = new List<Point>();
+                shortestPath.ForEach(point =>
+                {
+                    point.X = point.X*SearchAccuracy;
+                    point.Y = point.Y*SearchAccuracy;
+                    path.Add(point);
+                });
+                _path.AddCurve(path.ToArray());
             }
         }
 
         private void Lee(int k, int x, int y, List<Point> path)
         {
             path.Add(new Point(x, y));
-            if (shortestPathLength > k && x == targetX && y == targetY)
+            if (shortestPathLength > k && x >= targetX - 1 && x <= targetX + 1 && y >= targetY - 1 && y <= targetY + 1)
             {
                 shortestPath = path;
                 shortestPathLength = k;
