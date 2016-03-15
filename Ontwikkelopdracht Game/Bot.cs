@@ -52,7 +52,7 @@ namespace Ontwikkelopdracht_Game
             {
                 for (int y = 0; y < SearchHeight; y++)
                 {
-                    g.DrawEllipse(new Pen(Color.FromArgb((int) (grid[x,y]/1366d*255), Color.Red)), x, y, 1, 1);
+                    g.DrawEllipse(new Pen(Color.FromArgb((int) (grid[x,y]/((float) SearchWidth)*255), Color.Black)), x * 50, y * 50, 50, 50);
                 }
             }
         }
@@ -85,8 +85,8 @@ namespace Ontwikkelopdracht_Game
         private int[,] grid = new int[SearchWidth, SearchHeight];
         private int[,] ignoreGrid = new int[SearchWidth, SearchHeight];
 
-        const int SearchHeight = World.Height;
-        const int SearchWidth = World.Width;
+        const int SearchHeight = World.Height/50;
+        const int SearchWidth = World.Width/50;
 
         private void CreatePath(double targetX, double targetY)
         {
@@ -98,15 +98,15 @@ namespace Ontwikkelopdracht_Game
                 for (int y = 0; y < SearchHeight; y++)
                 {
                     grid[x, y] = SearchWidth;
-                    if (ObjectManager.Instance.GameObjects.Any(o => o.Rect.Contains(x, y)))
+                    if (ObjectManager.Instance.GameObjects.Any(o => o.Rect.Contains(x*50, y*50)))
                     {
                         ignoreGrid[x, y] = 1;
                     }
                 }
             }
 
-            Lee(0, (int) X, (int) Y);
-            Console.WriteLine("Shortest route: " + grid[(int) targetX, (int) targetY]);
+            Lee(0, (int) X/50, (int) Y/50);
+            Console.WriteLine("Shortest route: " + grid[(int) targetX/50, (int) targetY/50]);
         }
 
         private void Lee(int k, int x, int y)
