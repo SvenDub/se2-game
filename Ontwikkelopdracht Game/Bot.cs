@@ -46,6 +46,15 @@ namespace Ontwikkelopdracht_Game
         {
             g.FillRectangle(Brushes.Orange, Rect);
             g.DrawPath(new Pen(Color.Aqua, Width), _path);
+
+            // TODO TEMP
+            for (int x = 0; x < SearchWidth; x++)
+            {
+                for (int y = 0; y < SearchHeight; y++)
+                {
+                    g.DrawEllipse(new Pen(Color.FromArgb((int) (grid[x,y]/1366d*255), Color.Red)), x, y, 1, 1);
+                }
+            }
         }
 
         public override void Fire()
@@ -73,27 +82,36 @@ namespace Ontwikkelopdracht_Game
             }
         }
 
-        private int[,] grid;
+        private int[,] grid = new int[SearchWidth, SearchHeight];
+        private int[,] ignoreGrid = new int[SearchWidth, SearchHeight];
+
         const int SearchHeight = World.Height;
         const int SearchWidth = World.Width;
 
         private void CreatePath(double targetX, double targetY)
         {
             grid = new int[SearchWidth, SearchHeight];
+            ignoreGrid = new int[SearchWidth, SearchHeight];
+
             for (int x = 0; x < SearchWidth; x++)
             {
                 for (int y = 0; y < SearchHeight; y++)
                 {
                     grid[x, y] = SearchWidth;
+                    if (ObjectManager.Instance.GameObjects.Any(o => o.Rect.Contains(x, y)))
+                    {
+                        ignoreGrid[x, y] = 1;
+                    }
                 }
             }
+
             Lee(0, (int) X, (int) Y);
             Console.WriteLine("Shortest route: " + grid[(int) targetX, (int) targetY]);
         }
 
         private void Lee(int k, int x, int y)
         {
-            if (x + 1 < SearchWidth)
+            if (x + 1 < SearchWidth && ignoreGrid[x + 1, y] != 1)
             {
                 // Go down...
                 if (grid[x + 1, y] > k + 1)
@@ -104,7 +122,7 @@ namespace Ontwikkelopdracht_Game
             }
 
             // First check for boundaries...
-            if (x - 1 > 0)
+            if (x - 1 > 0 && ignoreGrid[x - 1, y] != 1)
             {
                 // Go up...
                 if (grid[x - 1, y] > k + 1)
@@ -115,7 +133,7 @@ namespace Ontwikkelopdracht_Game
             }
 
             // First check for boundaries...
-            if (y + 1 < SearchHeight)
+            if (y + 1 < SearchHeight && ignoreGrid[x, y + 1] != 1)
             {
                 // Go right...
                 if (grid[x, y + 1] > k + 1)
@@ -126,7 +144,7 @@ namespace Ontwikkelopdracht_Game
             }
 
             // First check for boundaries...
-            if (y - 1 > 0)
+            if (y - 1 > 0 && ignoreGrid[x, y - 1] != 1)
             {
                 // Go left...
                 if (grid[x, y - 1] > k + 1)
