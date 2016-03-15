@@ -180,6 +180,16 @@ namespace Ontwikkelopdracht_Game
                 shortestPathLength = k;
             }
 
+            if (y - 1 > 0 && ignoreGrid[x, y - 1] != 1)
+            {
+                // N
+                if (grid[x, y - 1] > k + 1)
+                {
+                    grid[x, y - 1] = k + 1;
+                    Lee(k + 1, x, y - 1, new List<Point>(path));
+                }
+            }
+
             if (x + 1 < SearchWidth && ignoreGrid[x + 1, y] != 1)
             {
                 // E
@@ -187,16 +197,6 @@ namespace Ontwikkelopdracht_Game
                 {
                     grid[x + 1, y] = k + 1;
                     Lee(k + 1, x + 1, y, new List<Point>(path));
-                }
-            }
-
-            if (x - 1 > 0 && ignoreGrid[x - 1, y] != 1)
-            {
-                // W
-                if (grid[x - 1, y] > k + 1)
-                {
-                    grid[x - 1, y] = k + 1;
-                    Lee(k + 1, x - 1, y, new List<Point>(path));
                 }
             }
 
@@ -210,18 +210,37 @@ namespace Ontwikkelopdracht_Game
                 }
             }
 
-
-            if (y - 1 > 0 && ignoreGrid[x, y - 1] != 1)
+            if (x - 1 > 0 && ignoreGrid[x - 1, y] != 1)
             {
-                // N
-                if (grid[x, y - 1] > k + 1)
+                // W
+                if (grid[x - 1, y] > k + 1)
                 {
-                    grid[x, y - 1] = k + 1;
-                    Lee(k + 1, x, y - 1, new List<Point>(path));
+                    grid[x - 1, y] = k + 1;
+                    Lee(k + 1, x - 1, y, new List<Point>(path));
                 }
             }
 
-            /*if (x - 1 < SearchWidth && y + 1 < SearchHeight && ignoreGrid[x - 1, y + 1] != 1)
+            /*if (x + 1 < SearchWidth && y - 1 < SearchHeight && ignoreGrid[x + 1, y - 1] != 1)
+            {
+                // NE
+                if (grid[x + 1, y - 1] > k + 1)
+                {
+                    grid[x + 1, y - 1] = k + 1;
+                    Lee(k + 1, x + 1, y - 1, new List<Point>(path));
+                }
+            }
+
+            if (x + 1 < SearchWidth && y + 1 < SearchHeight && ignoreGrid[x + 1, y + 1] != 1)
+            {
+                // SE
+                if (grid[x + 1, y + 1] > k + 1)
+                {
+                    grid[x + 1, y + 1] = k + 1;
+                    Lee(k + 1, x + 1, y + 1, new List<Point>(path));
+                }
+            }
+            
+            if (x - 1 < SearchWidth && y + 1 < SearchHeight && ignoreGrid[x - 1, y + 1] != 1)
             {
                 // SW
                 if (grid[x - 1, y + 1] > k + 1)
@@ -238,26 +257,6 @@ namespace Ontwikkelopdracht_Game
                 {
                     grid[x - 1, y - 1] = k + 1;
                     Lee(k + 1, x - 1, y - 1, new List<Point>(path));
-                }
-            }
-
-            if (x + 1 < SearchWidth && y + 1 < SearchHeight && ignoreGrid[x + 1, y + 1] != 1)
-            {
-                // SE
-                if (grid[x + 1, y + 1] > k + 1)
-                {
-                    grid[x + 1, y + 1] = k + 1;
-                    Lee(k + 1, x + 1, y + 1, new List<Point>(path));
-                }
-            }
-
-            if (x + 1 < SearchWidth && y - 1 < SearchHeight && ignoreGrid[x + 1, y - 1] != 1)
-            {
-                // NE
-                if (grid[x + 1, y - 1] > k + 1)
-                {
-                    grid[x + 1, y - 1] = k + 1;
-                    Lee(k + 1, x + 1, y - 1, new List<Point>(path));
                 }
             }*/
         }
