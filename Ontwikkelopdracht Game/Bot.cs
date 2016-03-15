@@ -23,19 +23,35 @@ namespace Ontwikkelopdracht_Game
             {
                 CreatePath(closestPlayer);
 
-                Rotation = Math.Atan2(closestPlayer.X - X, closestPlayer.Y - Y);
+                if (shortestPath.Count > 1)
+                {
+                    List<Point> path = new List<Point>();
+                    shortestPath.ForEach(point =>
+                    {
+                        point.X = point.X * SearchAccuracy;
+                        point.Y = point.Y * SearchAccuracy;
+                        path.Add(point);
+                    });
+
+                    if (Math.Abs(path[0].X - X) < 50 && Math.Abs(path[0].Y - Y) < 50)
+                    {
+                        Rotation = Math.Atan2(path[1].X - (X + Width/2), path[1].Y - (Y + Width/2));
+                    }
+                    else
+                    {
+                        Rotation = Math.Atan2(path[0].X - (X + Width / 2), path[0].Y - (Y + Width / 2));
+                    }
+                }
                 Move(2);
+
+                if (Cooldown <= 0)
+                {
+                    Fire(closestPlayer.X, closestPlayer.Y);
+                    Cooldown = BaseCooldown;
+                }
             }
 
-            if (Cooldown <= 0)
-            {
-                Fire();
-                Cooldown = BaseCooldown;
-            }
-            else
-            {
                 Cooldown--;
-            }
         }
 
         private double DistanceTo(Player player)
@@ -73,6 +89,23 @@ namespace Ontwikkelopdracht_Game
             });
         }
 
+        public void Fire(double x, double y)
+        {
+            double rotation = Math.Atan2(x - X, y - Y);
+
+            ObjectManager.Instance.AddObject(new Bullet
+            {
+                Damage = 25,
+                Owner = this,
+                Rotation = rotation,
+                X = X,
+                Y = Y,
+                Speed = 5,
+                Width = 10,
+                Height = 10
+            });
+        }
+
         public override void DealDamage(GameObject source, double damage)
         {
             base.DealDamage(source, damage);
@@ -91,7 +124,7 @@ namespace Ontwikkelopdracht_Game
         private int[,] grid = new int[SearchWidth, SearchHeight];
         private int[,] ignoreGrid = new int[SearchWidth, SearchHeight];
 
-        const int SearchAccuracy = 25;
+        const int SearchAccuracy = 49;
 
         const int SearchHeight = World.Height/SearchAccuracy;
         const int SearchWidth = World.Width/SearchAccuracy;
@@ -123,7 +156,7 @@ namespace Ontwikkelopdracht_Game
                 }
             }
 
-            Lee(0, (int) X/SearchAccuracy, (int) Y/SearchAccuracy, new List<Point>());
+            Lee(0, (int) ((X+Width/2+1)/SearchAccuracy), (int) ((Y+Height/2+1)/SearchAccuracy), new List<Point>());
 
             if (shortestPath.Count > 0)
             {
@@ -188,7 +221,7 @@ namespace Ontwikkelopdracht_Game
                 }
             }
 
-            if (x - 1 < SearchWidth && y + 1 < SearchHeight && ignoreGrid[x - 1, y + 1] != 1)
+            /*if (x - 1 < SearchWidth && y + 1 < SearchHeight && ignoreGrid[x - 1, y + 1] != 1)
             {
                 // SW
                 if (grid[x - 1, y + 1] > k + 1)
@@ -226,7 +259,7 @@ namespace Ontwikkelopdracht_Game
                     grid[x + 1, y - 1] = k + 1;
                     Lee(k + 1, x + 1, y - 1, new List<Point>(path));
                 }
-            }
+            }*/
         }
     }
 }
