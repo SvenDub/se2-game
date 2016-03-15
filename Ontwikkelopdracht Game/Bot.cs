@@ -3,12 +3,16 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Ontwikkelopdracht_Game
 {
     public class Bot : Character
     {
         private readonly GraphicsPath _path = new GraphicsPath();
+
+        private object _lock = new object();
 
         public override void GameTick()
         {
@@ -21,28 +25,31 @@ namespace Ontwikkelopdracht_Game
 
             if (closestPlayer != null)
             {
-                CreatePath(closestPlayer);
-
-                if (shortestPath.Count > 1)
+                lock (_lock)
                 {
-                    List<Point> path = new List<Point>();
-                    shortestPath.ForEach(point =>
+                    if (shortestPath.Count > 1)
                     {
-                        point.X = point.X * SearchAccuracy;
-                        point.Y = point.Y * SearchAccuracy;
-                        path.Add(point);
-                    });
+                        List<Point> path = new List<Point>();
+                        shortestPath.ForEach(point =>
+                        {
+                            point.X = point.X*SearchAccuracy;
+                            point.Y = point.Y*SearchAccuracy;
+                            path.Add(point);
+                        });
 
-                    if (Math.Abs(path[0].X - X) < 50 && Math.Abs(path[0].Y - Y) < 50)
-                    {
-                        Rotation = Math.Atan2(path[1].X - (X + Width/2), path[1].Y - (Y + Width/2));
-                    }
-                    else
-                    {
-                        Rotation = Math.Atan2(path[0].X - (X + Width / 2), path[0].Y - (Y + Width / 2));
+                        if (Math.Abs(path[0].X - X) < 50 && Math.Abs(path[0].Y - Y) < 50)
+                        {
+                            Rotation = Math.Atan2(path[1].X - (X + Width/2), path[1].Y - (Y + Width/2));
+                        }
+                        else
+                        {
+                            Rotation = Math.Atan2(path[0].X - (X + Width/2), path[0].Y - (Y + Width/2));
+                        }
                     }
                 }
                 Move(2);
+
+                CreatePath(closestPlayer);
 
                 if (Cooldown <= 0)
                 {
@@ -62,7 +69,23 @@ namespace Ontwikkelopdracht_Game
         public override void Draw(Graphics g)
         {
             g.FillRectangle(Brushes.Orange, Rect);
-            g.DrawPath(new Pen(Color.Aqua, Width), _path);
+
+            lock (_lock)
+            {
+                if (shortestPath.Count > 1)
+                {
+                    List<Point> path = new List<Point>();
+                    shortestPath.ForEach(point =>
+                    {
+                        point.X = point.X*SearchAccuracy;
+                        point.Y = point.Y*SearchAccuracy;
+                        path.Add(point);
+                    });
+                    _path.AddCurve(path.ToArray());
+                }
+            }
+
+            g.DrawPath(new Pen(Color.Aqua, 10), _path);
 
             // TODO TEMP
             for (int x = 0; x < SearchWidth; x++)
@@ -131,8 +154,11 @@ namespace Ontwikkelopdracht_Game
 
         private void CreatePath(GameObject target)
         {
-            shortestPath = new List<Point>();
-            shortestPathLength = SearchWidth;
+            lock (_lock)
+            {
+                shortestPath = new List<Point>();
+                shortestPathLength = SearchWidth;
+            }
             targetX = (int) target.X/SearchAccuracy;
             targetY = (int) target.Y/SearchAccuracy;
             grid = new int[SearchWidth, SearchHeight];
@@ -145,7 +171,8 @@ namespace Ontwikkelopdracht_Game
                     grid[x, y] = SearchWidth;
                     Rectangle rectangle = new Rectangle(x*SearchAccuracy, y*SearchAccuracy, SearchAccuracy,
                         SearchAccuracy);
-                    if (ObjectManager.Instance.Intersects(this, rectangle))
+                    if (ObjectManager.Instance.Intersects(this, rectangle,
+                        ObjectManager.Instance.GameObjects.FindAll(o => o is Bullet && ((Bullet) o).Owner == this)))
                     {
                         ignoreGrid[x, y] = 1;
                         if (ObjectManager.Instance.IntersectedObjects(this, rectangle).Contains(target))
@@ -156,28 +183,23 @@ namespace Ontwikkelopdracht_Game
                 }
             }
 
-            Lee(0, (int) ((X+Width/2+1)/SearchAccuracy), (int) ((Y+Height/2+1)/SearchAccuracy), new List<Point>());
-
-            if (shortestPath.Count > 0)
+            Task.Factory.StartNew(() =>
             {
-                List<Point> path = new List<Point>();
-                shortestPath.ForEach(point =>
-                {
-                    point.X = point.X*SearchAccuracy;
-                    point.Y = point.Y*SearchAccuracy;
-                    path.Add(point);
-                });
-                _path.AddCurve(path.ToArray());
-            }
+                Lee(0, (int) ((X + Width/2 + 1)/SearchAccuracy),
+                    (int) ((Y + Height/2 + 1)/SearchAccuracy), new List<Point>());
+            });
         }
 
         private void Lee(int k, int x, int y, List<Point> path)
         {
             path.Add(new Point(x, y));
-            if (shortestPathLength > k && ignoreGrid[x, y] == 2)
+            lock (_lock)
             {
-                shortestPath = path;
-                shortestPathLength = k;
+                if (shortestPathLength > k && ignoreGrid[x, y] == 2)
+                {
+                    shortestPath = path;
+                    shortestPathLength = k;
+                }
             }
 
             if (y - 1 > 0 && ignoreGrid[x, y - 1] != 1)
@@ -209,7 +231,7 @@ namespace Ontwikkelopdracht_Game
                     Lee(k + 1, x, y + 1, new List<Point>(path));
                 }
             }
-
+            
             if (x - 1 > 0 && ignoreGrid[x - 1, y] != 1)
             {
                 // W
@@ -219,46 +241,6 @@ namespace Ontwikkelopdracht_Game
                     Lee(k + 1, x - 1, y, new List<Point>(path));
                 }
             }
-
-            /*if (x + 1 < SearchWidth && y - 1 < SearchHeight && ignoreGrid[x + 1, y - 1] != 1)
-            {
-                // NE
-                if (grid[x + 1, y - 1] > k + 1)
-                {
-                    grid[x + 1, y - 1] = k + 1;
-                    Lee(k + 1, x + 1, y - 1, new List<Point>(path));
-                }
-            }
-
-            if (x + 1 < SearchWidth && y + 1 < SearchHeight && ignoreGrid[x + 1, y + 1] != 1)
-            {
-                // SE
-                if (grid[x + 1, y + 1] > k + 1)
-                {
-                    grid[x + 1, y + 1] = k + 1;
-                    Lee(k + 1, x + 1, y + 1, new List<Point>(path));
-                }
-            }
-            
-            if (x - 1 < SearchWidth && y + 1 < SearchHeight && ignoreGrid[x - 1, y + 1] != 1)
-            {
-                // SW
-                if (grid[x - 1, y + 1] > k + 1)
-                {
-                    grid[x - 1, y + 1] = k + 1;
-                    Lee(k + 1, x - 1, y + 1, new List<Point>(path));
-                }
-            }
-
-            if (x - 1 < SearchWidth && y - 1 < SearchHeight && ignoreGrid[x - 1, y - 1] != 1)
-            {
-                // NW
-                if (grid[x - 1, y - 1] > k + 1)
-                {
-                    grid[x - 1, y - 1] = k + 1;
-                    Lee(k + 1, x - 1, y - 1, new List<Point>(path));
-                }
-            }*/
         }
     }
 }
