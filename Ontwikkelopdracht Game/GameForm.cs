@@ -12,7 +12,9 @@ namespace Ontwikkelopdracht_Game
 
             _world.ImgCanvas = imgCanvas;
 
-            _world.Populate(LevelPreset.One);
+            _world.Populate(LevelPreset.Test);
+
+            new DebugView().Show();
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 
 namespace Ontwikkelopdracht_Game
 {
@@ -29,6 +30,11 @@ namespace Ontwikkelopdracht_Game
         public void Destroy()
         {
             ObjectManager.Instance.RemoveObject(this);
+        }
+
+        public override string ToString()
+        {
+            return GetType().Name + " @ " + Math.Round(X) + "," + Math.Round(Y);
         }
     }
 }

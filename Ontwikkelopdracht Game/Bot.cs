@@ -23,7 +23,7 @@ namespace Ontwikkelopdracht_Game
         private List<Point> _shortestPath = new List<Point>();
         private int _shortestPathLength = SearchWidth;
 
-        public bool Tracking = true;
+        public bool Tracking = false;
 
         public override void GameTick()
         {
@@ -176,7 +176,7 @@ namespace Ontwikkelopdracht_Game
                         SearchAccuracy, SearchAccuracy);
 
                     if (ObjectManager.Instance.Intersects(this, rectangle,
-                        ObjectManager.Instance.GameObjects.FindAll(o => o is Bullet && ((Bullet) o).Owner == this)))
+                        ObjectManager.Instance.GameObjects.ToList().FindAll(o => o is Bullet && ((Bullet) o).Owner == this)))
                     {
                         _ignoreGrid[x, y] = 1;
 
