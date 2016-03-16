@@ -19,9 +19,13 @@ namespace Ontwikkelopdracht_Game
 
         public void Move(double dx, double dy)
         {
-            if (CanMove(dx, dy))
+            if (CanMove(dx, 0))
             {
                 X += dx;
+            }
+
+            if (CanMove(0, dy))
+            {
                 Y += dy;
             }
 
