@@ -14,7 +14,9 @@ namespace Ontwikkelopdracht_Game
 
             _world.Populate(LevelPreset.Test);
 
+#if DEBUG
             new DebugView().Show();
+#endif
         }
     }
 }
