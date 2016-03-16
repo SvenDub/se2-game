@@ -82,23 +82,23 @@ namespace Ontwikkelopdracht_Game
         {
             g.FillRectangle(Brushes.Orange, Rect);
 
-            lock (_lock)
-            {
-                if (_shortestPath.Count > 1)
-                {
-                    List<Point> path = new List<Point>();
-                    _shortestPath.ForEach(point =>
-                    {
-                        point.X = point.X*SearchAccuracy;
-                        point.Y = point.Y*SearchAccuracy;
-                        path.Add(point);
-                    });
-                    _path.AddCurve(path.ToArray());
-                }
-            }
-
             if (Tracking)
             {
+                lock (_lock)
+                {
+                    if (_shortestPath.Count > 1)
+                    {
+                        List<Point> path = new List<Point>();
+                        _shortestPath.ForEach(point =>
+                        {
+                            point.X = point.X * SearchAccuracy;
+                            point.Y = point.Y * SearchAccuracy;
+                            path.Add(point);
+                        });
+                        _path.AddCurve(path.ToArray());
+                    }
+                }
+
                 g.DrawPath(new Pen(Color.Aqua, 10), _path);
 
                 for (int x = 0; x < SearchWidth; x++)
@@ -204,7 +204,7 @@ namespace Ontwikkelopdracht_Game
             lock (_lock)
             {
                 // Check if new shortest path detected
-                if (_shortestPathLength >= k && _ignoreGrid[x, y] == 2)
+                if (_shortestPathLength > k && _ignoreGrid[x, y] == 2)
                 {
                     _shortestPath = path;
                     _shortestPathLength = k;
