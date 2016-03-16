@@ -48,6 +48,7 @@
             this.ClientSize = new System.Drawing.Size(1350, 729);
             this.Controls.Add(this.imgCanvas);
             this.Name = "GameForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Game";
             ((System.ComponentModel.ISupportInitialize)(this.imgCanvas)).EndInit();
             this.ResumeLayout(false);

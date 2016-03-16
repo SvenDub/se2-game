@@ -48,7 +48,7 @@ namespace Ontwikkelopdracht_Game
         private void _gameTimer_Tick(object sender, EventArgs e)
         {
             GameTick();
-            Draw(_graphics);
+            //Draw(_graphics);
         }
 
         private void _drawTimer_Tick(object sender, EventArgs e)

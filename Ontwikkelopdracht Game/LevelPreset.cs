@@ -28,6 +28,12 @@ namespace Ontwikkelopdracht_Game
                 X = 150,
                 Y = 150
             },
+            new Wall
+            {
+                X = 150,
+                Y = 150,
+                Height = 450
+            }
             
         };
 
