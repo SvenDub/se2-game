@@ -57,6 +57,7 @@
     <Compile Include="ObjectManagerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="GameObjectTests.cs" />
+    <Compile Include="DrawTests.cs" />
     <Compile Include="WorldTests.cs" />
   </ItemGroup>
   <ItemGroup>
