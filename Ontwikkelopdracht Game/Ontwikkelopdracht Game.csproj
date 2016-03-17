@@ -94,6 +94,7 @@
       <DependentUpon>GameForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Entity\GameObject.cs" />
+    <Compile Include="InputController.cs" />
     <Compile Include="LevelPreset.cs" />
     <Compile Include="Entity\MoveableObject.cs" />
     <Compile Include="ObjectManager.cs" />
