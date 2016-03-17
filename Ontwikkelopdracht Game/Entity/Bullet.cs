@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 
-namespace Ontwikkelopdracht_Game
+namespace Ontwikkelopdracht_Game.Entity
 {
     public class Bullet : MoveableObject
     {

@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Ontwikkelopdracht_Game;
+using Ontwikkelopdracht_Game.Entity;
 
 namespace Tests
 {

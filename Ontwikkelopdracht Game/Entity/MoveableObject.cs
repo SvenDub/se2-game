@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Drawing;
 
-namespace Ontwikkelopdracht_Game
+namespace Ontwikkelopdracht_Game.Entity
 {
     public abstract class MoveableObject : GameObject
     {

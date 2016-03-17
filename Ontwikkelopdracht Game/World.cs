@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
+using Ontwikkelopdracht_Game.Entity;
 
 namespace Ontwikkelopdracht_Game
 {
@@ -14,6 +15,10 @@ namespace Ontwikkelopdracht_Game
         private readonly Timer _drawTimer;
         private readonly Timer _gameTimer;
         private readonly Graphics _graphics;
+
+        public bool Running => _gameTimer.Enabled;
+
+        public event GameEndedHandler GameEnded;
 
         private readonly ObjectManager _objectManager = ObjectManager.Instance;
 
@@ -75,12 +80,29 @@ namespace Ontwikkelopdracht_Game
         {
             _gameTimer.Stop();
 
-            MessageBox.Show(won ? "Won" : "Lost");
+            OnGameEnded(won);
         }
 
         public void Populate(List<GameObject> gameObjects)
         {
             gameObjects.ForEach(_objectManager.AddObject);
+        }
+
+        protected virtual void OnGameEnded(bool won)
+        {
+            GameEnded?.Invoke(this, new GameEndedArgs(won));
+        }
+    }
+
+    public delegate void GameEndedHandler (object sender, GameEndedArgs args);
+
+    public class GameEndedArgs : EventArgs
+    {
+        public bool Won { get; set; }
+
+        public GameEndedArgs(bool won)
+        {
+            Won = won;
         }
     }
 }

@@ -1,9 +1,7 @@
-﻿using System;
-using System.Drawing;
-using System.Windows.Forms;
+﻿using System.Drawing;
 using System.Windows.Input;
 
-namespace Ontwikkelopdracht_Game
+namespace Ontwikkelopdracht_Game.Entity
 {
     public class Player : Character
     {

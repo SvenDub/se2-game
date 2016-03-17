@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Drawing;
 using System.Linq;
+using Ontwikkelopdracht_Game.Entity;
 
 namespace Ontwikkelopdracht_Game
 {
