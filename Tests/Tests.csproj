@@ -35,9 +35,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -54,10 +56,17 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Entity\PlayerTests.cs" />
+    <Compile Include="Entity\BulletTests.cs" />
+    <Compile Include="Entity\BotTests.cs" />
+    <Compile Include="Entity\MoveableObjectTests.cs" />
+    <Compile Include="MockInputController.cs" />
     <Compile Include="ObjectManagerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="GameObjectTests.cs" />
+    <Compile Include="Entity\GameObjectTests.cs" />
     <Compile Include="DrawTests.cs" />
+    <Compile Include="Entity\EventTests.cs" />
+    <Compile Include="Entity\WallTests.cs" />
     <Compile Include="WorldTests.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -25,7 +25,7 @@ namespace Ontwikkelopdracht_Game.Entity
 
             Rectangle newRectangle = Rect;
             newRectangle.X += (int) dx;
-            newRectangle.Y -= (int) dy;
+            newRectangle.Y += (int) dy;
 
             if (ObjectManager.Instance.Intersects(this, newRectangle, excluded))
             {

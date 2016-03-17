@@ -35,7 +35,8 @@ namespace Tests
                 X = 101,
                 Y = 101,
                 Width = 50,
-                Height = 50
+                Height = 50,
+                Tracking = true
             };
 
             Player player = new Player
