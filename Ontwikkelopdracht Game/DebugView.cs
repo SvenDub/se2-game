@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using Ontwikkelopdracht_Game.Entity;
 
 namespace Ontwikkelopdracht_Game
 {

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Ontwikkelopdracht_Game.Entity;
 
 namespace Ontwikkelopdracht_Game
 {

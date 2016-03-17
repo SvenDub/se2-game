@@ -1,31 +1,31 @@
-﻿using System;
-using System.Drawing;
-using System.Windows.Forms;
+﻿using System.Drawing;
 using System.Windows.Input;
 
-namespace Ontwikkelopdracht_Game
+namespace Ontwikkelopdracht_Game.Entity
 {
     public class Player : Character
     {
+        private readonly InputController _input = InputController.Instance;
+
         public override void GameTick()
         {
             int dx = 0;
             int dy = 0;
             
-            if (Keyboard.IsKeyDown(Key.W))
+            if (_input.IsKeyDown(Key.W))
             {
                 dy = -3;
             }
-            else if (Keyboard.IsKeyDown(Key.S))
+            else if (_input.IsKeyDown(Key.S))
             {
                 dy = 3;
             }
 
-            if (Keyboard.IsKeyDown(Key.A))
+            if (_input.IsKeyDown(Key.A))
             {
                 dx = -3;
             }
-            else if (Keyboard.IsKeyDown(Key.D))
+            else if (_input.IsKeyDown(Key.D))
             {
                 dx = 3;
             }

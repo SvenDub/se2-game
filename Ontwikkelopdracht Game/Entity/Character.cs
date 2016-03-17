@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Ontwikkelopdracht_Game
+﻿namespace Ontwikkelopdracht_Game.Entity
 {
     public abstract class Character : MoveableObject
     {

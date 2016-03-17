@@ -5,7 +5,7 @@ using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Ontwikkelopdracht_Game
+namespace Ontwikkelopdracht_Game.Entity
 {
     public class Bot : Character
     {
@@ -20,8 +20,8 @@ namespace Ontwikkelopdracht_Game
         private int[,] _grid = new int[SearchWidth, SearchHeight];
         private int[,] _ignoreGrid = new int[SearchWidth, SearchHeight];
 
-        private List<Point> _shortestPath = new List<Point>();
-        private int _shortestPathLength = SearchWidth;
+        public List<Point> ShortestPath { get; private set; } = new List<Point>();
+        public int ShortestPathLength { get; private set; } = SearchWidth;
 
         public bool Tracking = false;
 
@@ -38,13 +38,13 @@ namespace Ontwikkelopdracht_Game
             {
                 lock (_lock)
                 {
-                    if (_shortestPath.Count > 1)
+                    if (ShortestPath.Count > 1)
                     {
-                        Point firstPoint = _shortestPath[0];
+                        Point firstPoint = ShortestPath[0];
                         firstPoint.X *= SearchAccuracy;
                         firstPoint.Y *= SearchAccuracy;
 
-                        Point secondPoint = _shortestPath[1];
+                        Point secondPoint = ShortestPath[1];
                         secondPoint.X *= SearchAccuracy;
                         secondPoint.Y *= SearchAccuracy;
 
@@ -86,10 +86,10 @@ namespace Ontwikkelopdracht_Game
             {
                 lock (_lock)
                 {
-                    if (_shortestPath.Count > 1)
+                    if (ShortestPath.Count > 1)
                     {
                         List<Point> path = new List<Point>();
-                        _shortestPath.ForEach(point =>
+                        ShortestPath.ForEach(point =>
                         {
                             point.X = point.X * SearchAccuracy;
                             point.Y = point.Y * SearchAccuracy;
@@ -154,12 +154,12 @@ namespace Ontwikkelopdracht_Game
             }
         }
 
-        private void CreatePath(GameObject target)
+        public void CreatePath(GameObject target)
         {
             lock (_lock)
             {
-                _shortestPath = new List<Point>();
-                _shortestPathLength = SearchWidth;
+                ShortestPath = new List<Point>();
+                ShortestPathLength = SearchWidth;
             }
 
             // Create grid
@@ -193,7 +193,7 @@ namespace Ontwikkelopdracht_Game
             {
                 Lee(0, (int) ((X + Width/2 + 1)/SearchAccuracy),
                     (int) ((Y + Height/2 + 1)/SearchAccuracy), new List<Point>());
-            });
+            }, TaskCreationOptions.AttachedToParent);
         }
 
         private void Lee(int k, int x, int y, List<Point> path)
@@ -204,10 +204,10 @@ namespace Ontwikkelopdracht_Game
             lock (_lock)
             {
                 // Check if new shortest path detected
-                if (_shortestPathLength > k && _ignoreGrid[x, y] == 2)
+                if (ShortestPathLength > k && _ignoreGrid[x, y] == 2)
                 {
-                    _shortestPath = path;
-                    _shortestPathLength = k;
+                    ShortestPath = path;
+                    ShortestPathLength = k;
                 }
             }
 
