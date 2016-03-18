@@ -34,6 +34,20 @@ namespace Ontwikkelopdracht_Game.Entity
             {
                 Move(dx, dy);
             }
+
+            if (_input.IsKeyDown(Key.Space))
+            {
+                if (Cooldown <= 0)
+                {
+                    Fire();
+                    Cooldown = BaseCooldown;
+                }
+            }
+
+            if (Cooldown > 0)
+            {
+                Cooldown--;
+            }
         }
 
         public override void Draw(Graphics g)
@@ -48,8 +62,8 @@ namespace Ontwikkelopdracht_Game.Entity
                 Damage = 25,
                 Owner = this,
                 Rotation = Rotation,
-                X = X,
-                Y = Y,
+                X = X + Width/2-5,
+                Y = Y + Height/2-5,
                 Speed = 10,
                 Width = 10,
                 Height = 10

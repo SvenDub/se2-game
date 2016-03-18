@@ -10,7 +10,8 @@ namespace Ontwikkelopdracht_Game
             new Player
             {
                 X = 50,
-                Y = 50
+                Y = 50,
+                BaseCooldown = 50
             },
             new Bot
             {
@@ -43,7 +44,8 @@ namespace Ontwikkelopdracht_Game
             new Player
             {
                 X = 50,
-                Y = 50
+                Y = 50,
+                BaseCooldown = 50
             },
             new Event
             {
