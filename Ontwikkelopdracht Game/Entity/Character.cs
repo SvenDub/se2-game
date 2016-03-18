@@ -4,7 +4,6 @@
     {
         public int Cooldown { get; set; }
         public int BaseCooldown { get; set; }
-        public bool CoolingDown { get; set; }
 
         public abstract void Fire();
     }

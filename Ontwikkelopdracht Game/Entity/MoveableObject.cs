@@ -29,7 +29,7 @@ namespace Ontwikkelopdracht_Game.Entity
                 Y += dy;
             }
 
-            Rotation = Math.Atan2(dy, dx);
+            Rotation = Math.Atan2(dx, dy);
         }
 
         public void Rotate(double amount)

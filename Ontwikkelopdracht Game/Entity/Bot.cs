@@ -119,8 +119,8 @@ namespace Ontwikkelopdracht_Game.Entity
                 Damage = 25,
                 Owner = this,
                 Rotation = Rotation,
-                X = X,
-                Y = Y,
+                X = X + Width/2-5,
+                Y = Y + Height/2-5,
                 Speed = 5,
                 Width = 10,
                 Height = 10
@@ -136,8 +136,8 @@ namespace Ontwikkelopdracht_Game.Entity
                 Damage = 25,
                 Owner = this,
                 Rotation = rotation,
-                X = X,
-                Y = Y,
+                X = X + Width/2-5,
+                Y = Y + Height/2-5,
                 Speed = 5,
                 Width = 10,
                 Height = 10
