@@ -87,6 +87,7 @@
       <DependentUpon>DebugView.cs</DependentUpon>
     </Compile>
     <Compile Include="Entity\Event.cs" />
+    <Compile Include="Entity\IDrawable.cs" />
     <Compile Include="GameForm.cs">
       <SubType>Form</SubType>
     </Compile>
