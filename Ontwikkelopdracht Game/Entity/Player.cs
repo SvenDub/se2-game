@@ -1,4 +1,6 @@
-﻿using System.Drawing;
+﻿using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
 using System.Windows.Input;
 
 namespace Ontwikkelopdracht_Game.Entity
@@ -6,6 +8,12 @@ namespace Ontwikkelopdracht_Game.Entity
     public class Player : Character
     {
         private readonly InputController _input = InputController.Instance;
+        private readonly List<ICarryable> _carryables = new List<ICarryable>();
+        public int Strength { get; set; } = 50;
+        public int UsedStrength => _carryables.Sum(carryable => carryable.Weight);
+
+        private int DropCooldown { get; set; } = 0;
+        private int BaseDropCooldown { get; set; } = 50;
 
         public override void GameTick()
         {
@@ -30,6 +38,15 @@ namespace Ontwikkelopdracht_Game.Entity
                 dx = 3;
             }
 
+            if (_input.IsKeyDown(Key.Q))
+            {
+                if (DropCooldown <= 0)
+                {
+                    DropItem();
+                    DropCooldown = BaseDropCooldown;
+                }
+            }
+
             if (dx != 0 || dy != 0)
             {
                 Move(dx, dy);
@@ -48,11 +65,32 @@ namespace Ontwikkelopdracht_Game.Entity
             {
                 Cooldown--;
             }
+
+            if (DropCooldown > 0)
+            {
+                DropCooldown--;
+            }
+
+            List<GameObject> intersectedObjects = ObjectManager.Instance.IntersectedObjects(this);
+            List<ICarryable> intersectedCarryables = intersectedObjects.OfType<ICarryable>().ToList();
+                
+            intersectedCarryables.ForEach(carryable =>
+            {
+                if (AddItem(carryable))
+                {
+                    carryable.PickUp();
+                }
+            });
         }
 
         public override void Draw(Graphics g)
         {
             g.FillRectangle(Brushes.Blue, Rect);
+            List<IDrawable> list = _carryables.OfType<IDrawable>().ToList();
+            for (int i = 0; i < list.Count; i++)
+            {
+                g.FillRectangle(Brushes.LightSkyBlue, (float) (X + 15 * i), (float) (Y + Width + 5), 10, 10);
+            }
         }
 
         public override void Fire()
@@ -78,6 +116,35 @@ namespace Ontwikkelopdracht_Game.Entity
             {
                 World.Instance.End(false);
             }
+        }
+
+        public bool AddItem(ICarryable item)
+        {
+            if (UsedStrength + item.Weight <= Strength)
+            {
+                _carryables.Add(item);
+                return true;
+            }
+
+            return false;
+        }
+
+        public void DropItem()
+        {
+            if (_carryables.Count > 0)
+            {
+                DropItem(_carryables.Last());
+            }
+        }
+
+        public void DropItem(ICarryable item)
+        {
+            _carryables.Remove(item);
+        }
+
+        public IReadOnlyCollection<ICarryable> GetItems()
+        {
+            return _carryables.AsReadOnly();
         }
     }
 }

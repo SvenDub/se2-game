@@ -23,7 +23,7 @@ namespace Ontwikkelopdracht_Game
 
         public void Draw(Graphics g)
         {
-            GameObjects.ToList().ForEach(o => o.Draw(g));
+            GameObjects.OfType<IDrawable>().ToList().ForEach(o => o.Draw(g));
         }
 
         public void AddObject(GameObject gameObject)
@@ -62,6 +62,7 @@ namespace Ontwikkelopdracht_Game
                     gameObject =>
                         !gameObject.Equals(source)
                         && !(gameObject is Event)
+                        && !(gameObject is ICarryable)
                         && !excluded.Contains(gameObject)
                         && gameObject.Intersects(rect));
         }

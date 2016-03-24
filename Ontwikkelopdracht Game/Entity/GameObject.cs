@@ -3,7 +3,7 @@ using System.Drawing;
 
 namespace Ontwikkelopdracht_Game.Entity
 {
-    public abstract class GameObject
+    public abstract class GameObject : IDrawable
     {
         public double X { get; set; }
         public double Y { get; set; }
