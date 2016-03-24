@@ -36,7 +36,6 @@ namespace Ontwikkelopdracht_Game
                 Y = 150,
                 Height = 450
             }
-            
         };
 
         public static List<GameObject> One => new List<GameObject>(OuterWalls)
@@ -78,6 +77,34 @@ namespace Ontwikkelopdracht_Game
                 X = 700,
                 Y = 300,
                 BaseCooldown = 100
+            },
+            new Stone
+            {
+                Width = 10,
+                Height = 10,
+                X = 80,
+                Y = 80
+            },
+            new Stone
+            {
+                Width = 10,
+                Height = 10,
+                X = 200,
+                Y = 80
+            },
+            new Stone
+            {
+                Width = 10,
+                Height = 10,
+                X = 80,
+                Y = 200
+            },
+            new Stone
+            {
+                Width = 10,
+                Height = 10,
+                X = 200,
+                Y = 200
             }
         };
 

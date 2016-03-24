@@ -62,6 +62,7 @@ namespace Ontwikkelopdracht_Game
                     gameObject =>
                         !gameObject.Equals(source)
                         && !(gameObject is Event)
+                        && !(gameObject is ICarryable)
                         && !excluded.Contains(gameObject)
                         && gameObject.Intersects(rect));
         }
