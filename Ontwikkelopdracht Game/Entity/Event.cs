@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using Newtonsoft.Json;
 
 namespace Ontwikkelopdracht_Game.Entity
 {
     public class Event : GameObject
     {
-        public Action<GameObject, GameObject> Action { get; set; }
+        [JsonIgnore]
+        public Action<GameObject, GameObject> Action { get; set; } = GameEvent.Win;
 
         public override void GameTick()
         {
@@ -35,6 +37,6 @@ namespace Ontwikkelopdracht_Game.Entity
             {
                 World.Instance.End(true);
             }
-        };
+        }; 
     }
 }

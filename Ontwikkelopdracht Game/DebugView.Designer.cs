@@ -50,17 +50,22 @@
             this.tabTiming = new System.Windows.Forms.TabPage();
             this.btnPause = new System.Windows.Forms.Button();
             this.btnResume = new System.Windows.Forms.Button();
+            this.tabMaps = new System.Windows.Forms.TabPage();
+            this.btnExport = new System.Windows.Forms.Button();
+            this.btnLoad = new System.Windows.Forms.Button();
             this.tabControl.SuspendLayout();
             this.tabPathfinding.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.tabTiming.SuspendLayout();
+            this.tabMaps.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl
             // 
             this.tabControl.Controls.Add(this.tabTiming);
             this.tabControl.Controls.Add(this.tabPathfinding);
+            this.tabControl.Controls.Add(this.tabMaps);
             this.tabControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl.Location = new System.Drawing.Point(0, 0);
             this.tabControl.Name = "tabControl";
@@ -281,6 +286,37 @@
             this.btnResume.UseVisualStyleBackColor = true;
             this.btnResume.Click += new System.EventHandler(this.btnResume_Click);
             // 
+            // tabMaps
+            // 
+            this.tabMaps.Controls.Add(this.btnLoad);
+            this.tabMaps.Controls.Add(this.btnExport);
+            this.tabMaps.Location = new System.Drawing.Point(4, 22);
+            this.tabMaps.Name = "tabMaps";
+            this.tabMaps.Size = new System.Drawing.Size(530, 241);
+            this.tabMaps.TabIndex = 2;
+            this.tabMaps.Text = "Maps";
+            this.tabMaps.UseVisualStyleBackColor = true;
+            // 
+            // btnExport
+            // 
+            this.btnExport.Location = new System.Drawing.Point(8, 6);
+            this.btnExport.Name = "btnExport";
+            this.btnExport.Size = new System.Drawing.Size(75, 23);
+            this.btnExport.TabIndex = 0;
+            this.btnExport.Text = "Export all";
+            this.btnExport.UseVisualStyleBackColor = true;
+            this.btnExport.Click += new System.EventHandler(this.btnExport_Click);
+            // 
+            // btnLoad
+            // 
+            this.btnLoad.Location = new System.Drawing.Point(8, 35);
+            this.btnLoad.Name = "btnLoad";
+            this.btnLoad.Size = new System.Drawing.Size(75, 23);
+            this.btnLoad.TabIndex = 1;
+            this.btnLoad.Text = "Load";
+            this.btnLoad.UseVisualStyleBackColor = true;
+            this.btnLoad.Click += new System.EventHandler(this.btnLoad_Click);
+            // 
             // DebugView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -299,6 +335,7 @@
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             this.tabTiming.ResumeLayout(false);
+            this.tabMaps.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -327,5 +364,8 @@
         private System.Windows.Forms.TabPage tabTiming;
         private System.Windows.Forms.Button btnResume;
         private System.Windows.Forms.Button btnPause;
+        private System.Windows.Forms.TabPage tabMaps;
+        private System.Windows.Forms.Button btnExport;
+        private System.Windows.Forms.Button btnLoad;
     }
 }

@@ -102,8 +102,11 @@
     </Compile>
     <Compile Include="Entity\GameObject.cs" />
     <Compile Include="InputController.cs" />
+    <Compile Include="LevelSaveException.cs" />
+    <Compile Include="LevelLoadException.cs" />
     <Compile Include="LevelPreset.cs" />
     <Compile Include="Entity\MoveableObject.cs" />
+    <Compile Include="MapManager.cs" />
     <Compile Include="ObjectManager.cs" />
     <Compile Include="Entity\Player.cs" />
     <Compile Include="Program.cs" />
