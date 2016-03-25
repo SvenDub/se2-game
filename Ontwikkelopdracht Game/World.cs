@@ -92,6 +92,16 @@ namespace Ontwikkelopdracht_Game
         {
             GameEnded?.Invoke(this, new GameEndedArgs(won));
         }
+
+        public void Pause()
+        {
+            _gameTimer.Stop();
+        }
+
+        public void Resume()
+        {
+            _gameTimer.Start();
+        }
     }
 
     public delegate void GameEndedHandler (object sender, GameEndedArgs args);

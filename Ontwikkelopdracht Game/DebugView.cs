@@ -74,5 +74,15 @@ namespace Ontwikkelopdracht_Game
             e.Handled = true;
             e.SuppressKeyPress = true;
         }
+
+        private void btnPause_Click(object sender, EventArgs e)
+        {
+            _world.Pause();
+        }
+
+        private void btnResume_Click(object sender, EventArgs e)
+        {
+            _world.Resume();
+        }
     }
 }
