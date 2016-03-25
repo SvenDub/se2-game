@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Windows.Forms;
 using Ontwikkelopdracht_Game.Entity;
 
@@ -18,7 +20,8 @@ namespace Ontwikkelopdracht_Game
             _objectManager.GameObjects.CollectionChanged += GameObjects_CollectionChanged;
         }
 
-        private void GameObjects_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        private void GameObjects_CollectionChanged(object sender,
+            System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             lstPathfinding.DataSource = null;
             lstPathfinding.DataSource = _objectManager.GameObjects;
@@ -31,7 +34,8 @@ namespace Ontwikkelopdracht_Game
 
         private void UpdateList()
         {
-            if (lstPathfinding.SelectedIndex >= _objectManager.GameObjects.Count || lstPathfinding.SelectedIndex == -1) return;
+            if (lstPathfinding.SelectedIndex >= _objectManager.GameObjects.Count || lstPathfinding.SelectedIndex == -1)
+                return;
 
             GameObject selectedItem = _objectManager.GameObjects[lstPathfinding.SelectedIndex];
 
@@ -57,13 +61,14 @@ namespace Ontwikkelopdracht_Game
 
         private void chkTracking_CheckedChanged(object sender, EventArgs e)
         {
-            if (lstPathfinding.SelectedIndex >= _objectManager.GameObjects.Count || lstPathfinding.SelectedIndex == -1) return;
+            if (lstPathfinding.SelectedIndex >= _objectManager.GameObjects.Count || lstPathfinding.SelectedIndex == -1)
+                return;
 
             GameObject selectedItem = _objectManager.GameObjects[lstPathfinding.SelectedIndex];
 
             if (selectedItem is Bot)
             {
-                Bot bot = (Bot)selectedItem;
+                Bot bot = (Bot) selectedItem;
 
                 bot.Tracking = chkTracking.Checked;
             }
@@ -73,6 +78,60 @@ namespace Ontwikkelopdracht_Game
         {
             e.Handled = true;
             e.SuppressKeyPress = true;
+        }
+
+        private void btnPause_Click(object sender, EventArgs e)
+        {
+            _world.Pause();
+        }
+
+        private void btnResume_Click(object sender, EventArgs e)
+        {
+            _world.Resume();
+        }
+
+        private void btnExport_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                MapManager.Export(LevelPreset.One, "Levels\\One.lvl");
+                MapManager.Export(LevelPreset.Test, "Levels\\Test.lvl");
+            }
+            catch (LevelSaveException ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void btnLoad_Click(object sender, EventArgs e)
+        {
+            _world.Pause();
+
+            Directory.CreateDirectory("Levels");
+
+            OpenFileDialog dialog = new OpenFileDialog
+            {
+                Filter = "Level|*.lvl",
+                InitialDirectory = Directory.GetCurrentDirectory() + "\\Levels"
+            };
+
+            DialogResult result = dialog.ShowDialog();
+
+            if (result == DialogResult.OK)
+            {
+                try
+                {
+                    List<GameObject> gameObjects = MapManager.Import(dialog.FileName);
+                    _objectManager.GameObjects.Clear();
+                    _world.Populate(gameObjects);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+
+            _world.Resume();
         }
     }
 }

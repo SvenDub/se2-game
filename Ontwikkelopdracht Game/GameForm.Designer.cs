@@ -50,6 +50,7 @@
             this.Name = "GameForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Game";
+            this.Load += new System.EventHandler(this.GameForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.imgCanvas)).EndInit();
             this.ResumeLayout(false);
 
