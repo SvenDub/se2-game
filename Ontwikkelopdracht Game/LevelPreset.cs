@@ -17,7 +17,8 @@ namespace Ontwikkelopdracht_Game
             {
                 X = 500,
                 Y = 500,
-                BaseCooldown = 100
+                BaseCooldown = 100,
+                Tracking = true
             },
             new Event
             {

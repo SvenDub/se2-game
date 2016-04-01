@@ -56,6 +56,8 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Database\Memory\InMemoryDbInjector.cs" />
+    <Compile Include="Database\Memory\MapRepository.cs" />
     <Compile Include="Entity\PlayerTests.cs" />
     <Compile Include="Entity\BulletTests.cs" />
     <Compile Include="Entity\BotTests.cs" />
@@ -67,6 +69,7 @@
     <Compile Include="DrawTests.cs" />
     <Compile Include="Entity\EventTests.cs" />
     <Compile Include="Entity\WallTests.cs" />
+    <Compile Include="DatabaseTest.cs" />
     <Compile Include="WorldTests.cs" />
   </ItemGroup>
   <ItemGroup>
