@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
+using Ontwikkelopdracht_Game.Database;
 using Ontwikkelopdracht_Game.Entity;
 
 namespace Ontwikkelopdracht_Game
@@ -10,6 +12,9 @@ namespace Ontwikkelopdracht_Game
     {
         private readonly World _world = World.Instance;
         private readonly ObjectManager _objectManager = ObjectManager.Instance;
+
+        private readonly IRepository<List<GameObject>, string> _repository =
+            Injector.Resolve<IRepository<List<GameObject>, string>>();
 
         public DebugView()
         {
@@ -94,8 +99,8 @@ namespace Ontwikkelopdracht_Game
         {
             try
             {
-                MapManager.Export(LevelPreset.One, "Levels\\One.lvl");
-                MapManager.Export(LevelPreset.Test, "Levels\\Test.lvl");
+                _repository.Save(LevelPreset.One, "One");
+                _repository.Save(LevelPreset.Test, "Test");
             }
             catch (LevelSaveException ex)
             {
@@ -107,28 +112,12 @@ namespace Ontwikkelopdracht_Game
         {
             _world.Pause();
 
-            Directory.CreateDirectory("Levels");
+            ListPrompt prompt = new ListPrompt("Load", _repository.List().ToList());
 
-            OpenFileDialog dialog = new OpenFileDialog
+            if (prompt.ShowDialog(this) == DialogResult.OK)
             {
-                Filter = "Level|*.lvl",
-                InitialDirectory = Directory.GetCurrentDirectory() + "\\Levels"
-            };
-
-            DialogResult result = dialog.ShowDialog();
-
-            if (result == DialogResult.OK)
-            {
-                try
-                {
-                    List<GameObject> gameObjects = MapManager.Import(dialog.FileName);
-                    _objectManager.GameObjects.Clear();
-                    _world.Populate(gameObjects);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
-                }
+                _objectManager.GameObjects.Clear();
+                _world.Populate(_repository.FindOne(prompt.SelectedItem));
             }
 
             _world.Resume();

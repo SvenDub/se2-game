@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
+using Ontwikkelopdracht_Game.Database;
 using Ontwikkelopdracht_Game.Entity;
 
 namespace Ontwikkelopdracht_Game
@@ -9,6 +11,10 @@ namespace Ontwikkelopdracht_Game
     public partial class GameForm : Form
     {
         private readonly World _world = World.Instance;
+        private readonly ObjectManager _objectManager = ObjectManager.Instance;
+
+        private readonly IRepository<List<GameObject>, string> _repository =
+            Injector.Resolve<IRepository<List<GameObject>, string>>();
 
         public GameForm()
         {
@@ -34,35 +40,16 @@ namespace Ontwikkelopdracht_Game
             {
                 _world.Pause();
 
-                Directory.CreateDirectory("Levels");
-                MapManager.Export(LevelPreset.One, "Levels\\One.lvl");
-                MapManager.Export(LevelPreset.Test, "Levels\\Test.lvl");
+                _repository.Save(LevelPreset.One, "One");
+                _repository.Save(LevelPreset.Test, "Test");
+                _repository.Save(LevelPreset.Test, "Test2");
 
-                OpenFileDialog dialog = new OpenFileDialog
-                {
-                    Filter = "Level|*.lvl",
-                    InitialDirectory = Directory.GetCurrentDirectory() + "\\Levels"
-                };
+                ListPrompt prompt = new ListPrompt("Load", _repository.List().ToList());
 
-                DialogResult result = dialog.ShowDialog();
-
-                if (result == DialogResult.OK)
+                if (prompt.ShowDialog(this) == DialogResult.OK)
                 {
-                    try
-                    {
-                        List<GameObject> gameObjects = MapManager.Import(dialog.FileName);
-                        _world.Populate(gameObjects);
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show("Could not load the level. Exiting.");
-                        Close();
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("No file selected. Exiting.");
-                    Close();
+                    _objectManager.GameObjects.Clear();
+                    _world.Populate(_repository.FindOne(prompt.SelectedItem));
                 }
 
                 _world.Resume();

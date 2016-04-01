@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
+using Ontwikkelopdracht_Game.Database.File;
 using Ontwikkelopdracht_Game.Entity;
 
 namespace Ontwikkelopdracht_Game
@@ -26,6 +27,8 @@ namespace Ontwikkelopdracht_Game
 
         private World()
         {
+            Injector.Register(FileDbInjector.Types);
+
             _bitmap = new Bitmap(Width, Height);
             _graphics = Graphics.FromImage(_bitmap);
 
