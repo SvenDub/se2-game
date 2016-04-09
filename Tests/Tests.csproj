@@ -56,8 +56,6 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="Database\Memory\InMemoryDbInjector.cs" />
-    <Compile Include="Database\Memory\MapRepository.cs" />
     <Compile Include="Entity\PlayerTests.cs" />
     <Compile Include="Entity\BulletTests.cs" />
     <Compile Include="Entity\BotTests.cs" />
@@ -76,6 +74,10 @@
     <ProjectReference Include="..\Ontwikkelopdracht Game\Ontwikkelopdracht Game.csproj">
       <Project>{99d34deb-f6fb-47a6-96fd-bfae5adfdf66}</Project>
       <Name>Ontwikkelopdracht Game</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Tests.Database\Tests.Database.csproj">
+      <Project>{75361ddb-f40d-42af-bab4-ed100123d889}</Project>
+      <Name>Tests.Database</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>
